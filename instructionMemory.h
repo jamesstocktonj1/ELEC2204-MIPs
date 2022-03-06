@@ -1,7 +1,7 @@
 #ifndef INSTRUCTION_H
 #define INSTRUCTION_H
 
-
+#define INSTRUCTION_MEMORY_SIZE 32
 
 class InstructionMemory {
 
@@ -12,6 +12,9 @@ public:
     void loadFromFile(char *fileName);
 
     ~InstructionMemory();
+
+private:
+    int *memory;
 };
 
 
