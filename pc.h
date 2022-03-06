@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#define INCREMENT_SIZE 4
+
 class PC {
 
 public:
