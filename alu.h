@@ -8,7 +8,7 @@ public:
     ALU();
 
     int performComputation(int value1, int value2, int operation);
-
+    int equalsZero(void);
 
     ~ALU();
 
