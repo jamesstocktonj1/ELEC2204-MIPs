@@ -18,3 +18,7 @@ int PC::getPC() {
 void PC::incrementPC() {
     programCounter += INCREMENT_SIZE;
 }
+
+PC::~PC() {
+    
+}
