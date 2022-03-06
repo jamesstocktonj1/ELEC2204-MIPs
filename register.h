@@ -15,7 +15,7 @@ public:
     ~Registers();
 
 private:
-    int memory;
+    int *memory;
 };
 
 
