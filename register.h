@@ -13,6 +13,9 @@ public:
     void writeRegister(int addr, int data);
 
     ~Registers();
+
+private:
+    int memory;
 };
 
 
