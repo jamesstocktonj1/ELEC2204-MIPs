@@ -30,7 +30,7 @@ int ALU::performComputation(int value1, int value2, int operation) {
             break;
 
         case SLT_OP:
-            aluResult = (value1 < value2) ? 0xFF : 0x00;
+            aluResult = (value1 < value2) ? 0xffff : 0x0000;
             break;
 
         case NOR_OP:
