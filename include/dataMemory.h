@@ -12,6 +12,8 @@ public:
     int readMemory(int addr);
     void writeMemory(int addr, int data);
 
+    void dumpFile(void);
+
     ~Memory();
 
 private:
