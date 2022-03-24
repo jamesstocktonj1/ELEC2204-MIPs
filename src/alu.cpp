@@ -1,4 +1,4 @@
-#include "alu.h"
+#include "../include/alu.h"
 
 
 ALU::ALU() {
