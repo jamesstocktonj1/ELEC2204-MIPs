@@ -1,4 +1,4 @@
-#include "../includeinstructionMemory.h"
+#include "../include/instructionMemory.h"
 
 #include <stdlib.h>
 #include <iostream>

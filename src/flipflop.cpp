@@ -1,4 +1,4 @@
-#include "../includeflipflop.h"
+#include "../include/flipflop.h"
 
 
 FlipFlop::FlipFlop() {

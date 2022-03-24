@@ -1,4 +1,4 @@
-#include "../includedataMemory.h"
+#include "../include/dataMemory.h"
 
 #include <stdlib.h>
 
