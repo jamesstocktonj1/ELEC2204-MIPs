@@ -77,17 +77,17 @@ void testMemory() {
     
     cout << "\nMemory Test" << endl;
 
-    Registers reg;
+    Memory mem;
 
     int writeValue = 0xf0;
     int writeAddr = 0x01;
 
 
     cout << "Writing value " << writeValue << " to memory address " << writeAddr << endl;
-    reg.writeRegister(writeAddr, writeValue);
+    mem.writeMemory(writeAddr, writeValue);
 
     cout << "Reading memory address " << writeAddr << endl;
-    int readValue = reg.readRegister(writeAddr);
+    int readValue = mem.readMemory(writeAddr);
 
 
     bool passTest = true;
@@ -96,6 +96,9 @@ void testMemory() {
         cout << "Memory Read/Write values do not match" << endl;
         passTest = false;
     }
+
+    //dump memory contents to text file
+    mem.dumpFile();
 
     //print whether task passed / failed
     cout << "Test: " << ((passTest) ? "PASS" : "FAIL") << endl;
