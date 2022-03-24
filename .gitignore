@@ -34,3 +34,4 @@
 *.jpg
 *.xlsx
 *.txt
+.vscode/settings.json
