@@ -3,8 +3,10 @@
 
 
 # make file commands
-#	main - compiles main program
 #	test - compiles test program
+#	runtest - run test program
+#	main - compiles main program
+#	runmain - run main program
 #	clean - removes compiled files
 
 #compiler constants
