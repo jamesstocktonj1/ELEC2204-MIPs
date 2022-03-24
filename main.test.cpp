@@ -9,21 +9,26 @@
 
 using namespace std;
 
-void testRegister(void);
-void testMemory(void);
-void testPC(void);
-void testALU(void);
+bool testRegister(void);
+bool testMemory(void);
+bool testPC(void);
+bool testALU(void);
 
 int main() {
 
 
     cout << "Performing Tests..." << endl;
 
+    bool fullPass = true;
 
-    testRegister();
-    testMemory();
-    testPC();
-    testALU();
+
+    fullPass = testRegister() & fullPass;
+    fullPass = testMemory() & fullPass;
+    fullPass = testPC() & fullPass;
+    fullPass = testALU() & fullPass;
+
+    cout << "\nComplete System Test" << endl;
+    cout << "Full Test: " << ((fullPass) ? "PASS" : "FAIL") << endl;
 
     return 0;
 }
@@ -32,7 +37,7 @@ int main() {
 
 
 
-void testRegister() {
+bool testRegister() {
     
     cout << "\nRegister Test" << endl;
 
@@ -70,10 +75,11 @@ void testRegister() {
 
     //print whether task passed / failed
     cout << "Test: " << ((passTest) ? "PASS" : "FAIL") << endl;
+    return passTest;
 }
 
 
-void testMemory() {
+bool testMemory() {
     
     cout << "\nMemory Test" << endl;
 
@@ -102,10 +108,11 @@ void testMemory() {
 
     //print whether task passed / failed
     cout << "Test: " << ((passTest) ? "PASS" : "FAIL") << endl;
+    return passTest;
 }
 
 
-void testPC() {
+bool testPC() {
 
     cout << "\nPC Test" << endl;
 
@@ -143,11 +150,12 @@ void testPC() {
 
     //print whether task passed / failed
     cout << "Test: " << ((passTest) ? "PASS" : "FAIL") << endl;
+    return passTest;
 }
 
 
 
-void testALU() {
+bool testALU() {
 
     cout << "\nALU Test" << endl;
 
@@ -213,4 +221,5 @@ void testALU() {
 
     //print whether task passed / failed
     cout << "Test: " << ((passTest) ? "PASS" : "FAIL") << endl;
+    return passTest;
 }
