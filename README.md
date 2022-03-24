@@ -20,7 +20,7 @@ make test
 make runtest
 ```
 
-## Makefile
+### Other Makefile
 
 Makefile also has a clean feature to remove all compiled files.
 
