@@ -1,2 +1,29 @@
 # ELEC2204-MIPs
-ELEC2204 Coursework, creating a 5-stage pipelined MIPs processor.
+Second year Computer Engineering coursework (ELEC2204). Building a 5-stage pipelined MIPs processor.
+
+
+## Usage 
+
+Compile and run the main program with the following.
+
+```sh
+make main
+make runmain
+```
+
+## Test Usage
+
+You can also test all the individual components in the file. This simply tests each unit, not the interconnects between them.
+
+```sh
+make test
+make runtest
+```
+
+## Makefile
+
+Makefile also has a clean feature to remove all compiled files.
+
+```sh
+make clean
+```
