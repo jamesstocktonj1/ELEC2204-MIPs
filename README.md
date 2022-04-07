@@ -7,7 +7,7 @@ Second year Computer Engineering coursework (ELEC2204). Building a 5-stage pipel
 Compile and run the main program with the following.
 
 ```sh
-make main
+make all
 make runmain
 ```
 
