@@ -16,21 +16,28 @@ TARGET = main
 TEST = $(TARGET).test
 
 BUILD = build
-INCLUDES = src
+SOURCE = src
+INCLUDES = $(wildcard $(SOURCE)/*.cpp)
 
 
+all: $(BUILD)/$(TARGET).out
 
-test:
-	$(CC) $(TEST).cpp $(INCLUDES)/*.cpp $(CFLAGS) -o $(BUILD)/$(TEST).out
+test: $(BUILD)/$(TEST).out
 
-runtest:
+
+runmain: all
+	$(BUILD)/$(TARGET).out
+
+runtest: test
 	$(BUILD)/$(TEST).out
 
-main:
-	$(CC) $(TARGET).cpp $(INCLUDES)/*.cpp $(CFLAGS) -o $(BUILD)/$(TARGET).out
-
-runmain:
-	$(BUILD)/$(TARGET).out
 
 clean:
 	rm -f build/*.out
+
+
+$(BUILD)/$(TEST).out: $(INCLUDES)
+	$(CC) $(TEST).cpp $(INCLUDES) $(CFLAGS) -o $(BUILD)/$(TEST).out
+
+$(BUILD)/$(TARGET).out: $(INCLUDES)
+	$(CC) $(TARGET).cpp $(INCLUDES) $(CFLAGS) -o $(BUILD)/$(TARGET).out
