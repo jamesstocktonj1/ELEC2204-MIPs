@@ -36,8 +36,8 @@ clean:
 	rm -f build/*.out
 
 
-$(BUILD)/$(TEST).out: $(INCLUDES)
+$(BUILD)/$(TEST).out: $(INCLUDES) $(TEST).cpp
 	$(CC) $(TEST).cpp $(INCLUDES) $(CFLAGS) -o $(BUILD)/$(TEST).out
 
-$(BUILD)/$(TARGET).out: $(INCLUDES)
+$(BUILD)/$(TARGET).out: $(INCLUDES) $(TARGET).cpp
 	$(CC) $(TARGET).cpp $(INCLUDES) $(CFLAGS) -o $(BUILD)/$(TARGET).out
