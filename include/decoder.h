@@ -3,7 +3,7 @@
 
 
 
-typedef struct ControlLines {
+typedef struct t_ControlLines {
     int regDst;
     int branch;
     int memRead;
@@ -12,7 +12,7 @@ typedef struct ControlLines {
     int memWrite;
     int aluSrc;
     int regWrite;
-};
+} ControlLines;
 
 
 class Decoder {
