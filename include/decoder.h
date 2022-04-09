@@ -4,14 +4,14 @@
 
 
 typedef struct t_ControlLines {
-    int regDst;
-    int branch;
-    int memRead;
-    int memToReg;
-    int aluOperation;
-    int memWrite;
-    int aluSrc;
-    int regWrite;
+    int regDst = 0;
+    int branch = 0;
+    int memRead = 0;
+    int memToReg = 0;
+    int aluOperation = 0;
+    int memWrite = 0;
+    int aluSrc = 0;
+    int regWrite = 0;
 } ControlLines;
 
 
@@ -36,10 +36,6 @@ private:
 
     int curInstruction;
 };
-
-
-
-
 
 
 #endif
