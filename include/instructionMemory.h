@@ -11,6 +11,8 @@ public:
     int loadData(int address);
     void loadFromFile(char *fileName);
 
+    void writeMemory(int address, int value);
+
     ~InstructionMemory();
 
 private:
