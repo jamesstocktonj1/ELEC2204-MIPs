@@ -25,7 +25,7 @@ all: $(BUILD)/$(TARGET).out
 test: $(BUILD)/$(TEST).out
 
 
-runmain: all
+run: all
 	$(BUILD)/$(TARGET).out
 
 runtest: test
