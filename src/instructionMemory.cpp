@@ -25,3 +25,8 @@ void InstructionMemory::loadFromFile(char *fileName) {
     std::ifstream file;
     file.open(fileName);
 }
+
+void InstructionMemory::writeMemory(int address, int value) {
+
+    memory[address] = value;
+}
