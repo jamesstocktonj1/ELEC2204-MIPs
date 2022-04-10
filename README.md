@@ -8,7 +8,7 @@ Compile and run the main program with the following.
 
 ```sh
 make all
-make runmain
+make run
 ```
 
 ## Test Usage
