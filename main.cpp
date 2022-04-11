@@ -73,6 +73,8 @@ int writtenRegisterAddress;
 int writtenRegister;
 int writterRegisterFlag;
 
+int globalBranch;
+
 
 
 
@@ -94,6 +96,8 @@ int main() {
     instructionMemory.writeMemory(2, 0x21080001);
 
     //instructionMemory.writeMemory(5, 0x0100402a);
+
+    globalBranch = 0;
 
 
 
@@ -184,17 +188,33 @@ int main() {
         eJumpAddr = decoder.getBranchAddress();// << 16;
         eDestAddr = decoder.getWriteAddress();
 
+        //set global branch flag
+        if(eControl.branch) {
+            globalBranch = 1;
+        }
+
         //pc state
         if(wControl.branch) {
             pc.setPC(wPC);
+            dInstruction = instructionMemory.loadData(dPC);
             cout << "Branch: 0x" << hex << wPC << endl;
         }
+
+        //processor stall - instruction 0
+        else if(globalBranch) {
+            dInstruction = 0;
+        }
+
+        //normal non-branch mode
         else {
             pc.incrementPC();
+            dInstruction = instructionMemory.loadData(dPC);
             cout << "Increment PC: 0x" << hex << pc.getPC() << endl;
+
+            globalBranch = 0;
         }
+
         dPC = pc.getPC();
-        dInstruction = instructionMemory.loadData(dPC);
 
         cout << "\nRegister Value: 0x" << hex << registers.readRegister(8) << "\n\n";
 
