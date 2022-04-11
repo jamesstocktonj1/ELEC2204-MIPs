@@ -90,7 +90,10 @@ int main() {
         //memory write back
         if(mControl.regWrite) {
             registers.writeRegister(mDestAddr, ((mControl.memToReg) ? mResult : mData));
-            cout << "Write Register 0x" << hex << mDestAddr << ": 0x" << hex << ((mControl.memToReg) ? mResult : mData) << endl;
+            
+            if(mDestAddr != 0) {
+                cout << "Write Register 0x" << hex << mDestAddr << ": 0x" << hex << ((mControl.memToReg) ? mResult : mData) << endl;
+            }
         }
 
 
