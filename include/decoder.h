@@ -32,6 +32,11 @@ public:
 
     ~Decoder();
 
+private:
+
+    int curInstruction;
+    int opCode;
+
     int address1;
     int address2;
     int writeAddress;
@@ -39,11 +44,6 @@ public:
     ControlLines controlLines;
 
     int branchAddress;
-
-private:
-
-    int curInstruction;
-    int opCode;
 };
 
 
