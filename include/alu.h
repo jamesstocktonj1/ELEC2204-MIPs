@@ -4,9 +4,9 @@
 
 
 //operation constants
-#define AND_OP 0b0000
+#define AND_OP 0b0010
 #define OR_OP 0b0001
-#define ADD_OP 0b0010
+#define ADD_OP 0b0000
 #define SUB_OP 0b0110
 #define SLT_OP 0b0111
 #define NOR_OP 0b1100
