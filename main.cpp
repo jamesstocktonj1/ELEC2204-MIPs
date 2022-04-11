@@ -69,6 +69,10 @@ int mDestAddr;
 int aluData1;
 int aluData2;
 
+int writtenRegisterAddress;
+int writtenRegister;
+int writterRegisterFlag;
+
 
 
 
@@ -85,8 +89,11 @@ int main() {
 
     //instructionMemory.writeMemory(0, 0x00004020);
     instructionMemory.writeMemory(0, 0x21080001);
+    instructionMemory.writeMemory(1, 0x21080001);
 
-    instructionMemory.writeMemory(5, 0x0100402a);
+    instructionMemory.writeMemory(2, 0x21080001);
+
+    //instructionMemory.writeMemory(5, 0x0100402a);
 
 
 
@@ -104,6 +111,11 @@ int main() {
                 cout << "Write Register 0x" << hex << mDestAddr << ": 0x" << hex << ((mControl.memToReg) ? mResult : mData) << endl;
             }
         }
+        
+        //colission control stored values
+        writtenRegisterAddress = mDestAddr;
+        writtenRegister = ((mControl.memToReg) ? mResult : mData);
+        writterRegisterFlag = mControl.regWrite;
 
 
         //data memory
@@ -130,19 +142,19 @@ int main() {
         aluData2 = (eControl.aluSrc) ? eJumpAddr : eData2;
 
         //data 1 collision control
-        if(wControl.regWrite && (wDestAddr == eDataAddress1) && (wDestAddr != 0)) {
+        if(mControl.regWrite && (mDestAddr == eDataAddress1) && (mDestAddr != 0)) {
             aluData1 = wResult;
         }
-        else if(mControl.regWrite && (mDestAddr == eDataAddress1) && (mDestAddr != 0)) {
-            aluData1 = mResult;
+        else if(writterRegisterFlag && (writtenRegisterAddress == eDataAddress1) && (writtenRegisterAddress != 0)) {
+            aluData1 = writtenRegister;
         }
 
         //data 2 colission control
-        if(wControl.regWrite && (wDestAddr == eDataAddress2) && (wDestAddr != 0)) {
+        if(mControl.regWrite && (mDestAddr == eDataAddress2) && (mDestAddr != 0)) {
             aluData2 = wResult;
         }
-        else if(mControl.regWrite && (mDestAddr == eDataAddress2) && (mDestAddr != 0)) {
-            aluData2 = mResult;
+        else if(writterRegisterFlag && (writtenRegisterAddress == eDataAddress2) && (writtenRegisterAddress != 0)) {
+            aluData2 = writtenRegister;
         }
 
 
@@ -150,8 +162,8 @@ int main() {
         wZero = alu.equalsZero();
 
         //ALU Logging
-        cout << "ALU: 0x" << hex << eData1;
-        cout << ", 0x" << hex <<  ((eControl.aluSrc) ? eJumpAddr : eData2);
+        cout << "ALU: 0x" << hex << aluData1;
+        cout << ", 0x" << hex <<  aluData2;
         cout << ", 0x" << hex << eControl.aluOperation;
         cout << ": 0x" << hex << wResult << endl;
 
@@ -188,6 +200,12 @@ int main() {
 
         cout << "Instruction Finished!\n" << endl;
         sleep(1);
+
+
+
+
+        //control signals forwarding
+
 
         
     }
