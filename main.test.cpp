@@ -12,7 +12,7 @@ using namespace std;
 bool testRegister(void);
 bool testMemory(void);
 bool testPC(void);
-bool testALU(void);
+bool testALU(void); 
 
 int main() {
 
@@ -20,7 +20,6 @@ int main() {
     cout << "Performing Tests..." << endl;
 
     bool fullPass = true;
-
 
     fullPass = testRegister() & fullPass;
     fullPass = testMemory() & fullPass;
@@ -91,6 +90,10 @@ bool testMemory() {
 
     cout << "Writing value " << writeValue << " to memory address " << writeAddr << endl;
     mem.writeMemory(writeAddr, writeValue);
+
+    for(int i=0; i<64; i++) {
+        mem.writeMemory(i + 192, (i << 8) | i);
+    }
 
     cout << "Reading memory address " << writeAddr << endl;
     int readValue = mem.readMemory(writeAddr);
