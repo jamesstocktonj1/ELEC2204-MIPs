@@ -32,30 +32,51 @@ void Decoder::setCurrentInstruction(int inst) {
     //op code - [31:26] (6-bits)
     opCode = 0x3f & (curInstruction >> 26);
 
-    std::cout << "Instruction: 0x" << std::hex << curInstruction << std::endl;
-    std::cout << "Op Code: 0x" << std::hex << opCode << std::endl;
-
     //R - type instruction
-    if(1) {
-    //if(opCode == 0) {
+    if(opCode == 0) {
+    //if(1) {
 
         //funct - [5:0] (6-bits)
-        controlLines.aluOperation = curInstruction & 0x3f;
+        controlLines.aluOperation = inst & 0x3f;
 
         //shamt - [10:6] (5-bits)
 
         //rd - [15:11] (5-bits)
-        controlLines.regWrite = 0x1f & (curInstruction >> 11);
+        writeAddress = 0x1f & (inst >> 11);
 
         //rt - [20:16] (5-bits)
-        address1 = 0x1f & (curInstruction >> 16);
+        address1 = 0x1f & (inst >> 16);
 
         //rs - [25:21] (5-bits)
-        address2 = 0x1f & (curInstruction >> 21);
+        address2 = 0x1f & (inst >> 21);
 
         //set flow control
         controlLines.regDst = 1;
         controlLines.regWrite = 1;
+        controlLines.memToReg = 1;
+    }
+
+    //addi instruction
+    else if(opCode == 0x8) {
+
+        //alu - add operation
+        controlLines.aluOperation = 0x0;
+
+        //constant - [15:0]
+        branchAddress = 0xff & inst;
+
+        //rd - [20:16]
+        writeAddress = 0x1f & (inst >> 16);
+
+        //rs - [25:21]
+        address1 = 0x1f & (inst >> 21);
+
+
+        //set flow control
+        controlLines.aluSrc = 1;
+        controlLines.regDst = 1;
+        controlLines.regWrite = 1;
+        controlLines.memToReg = 1;
     }
 }
 
