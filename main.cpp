@@ -64,6 +64,9 @@ int mResult;
 int mDestAddr;
 
 
+int instMem[12] = {
+    0,
+};
 
 
 
@@ -71,12 +74,23 @@ int main() {
 
     pc.setPC(0);
 
+    //instructionMemory.writeMemory(0, 0x00004020);
+    instructionMemory.writeMemory(0, 0x21080001);
+
+    instructionMemory.writeMemory(5, 0x0100402a);
+
+
+
+
+    //load first instruction
+    dInstruction = instructionMemory.loadData(0);
+
     while(1) {
 
         //memory write back
         if(mControl.regWrite) {
-            registers.writeRegister(mDestAddr, (mControl.memToReg) ? mDestAddr : mData);
-            cout << "Write Register 0x" << hex << mDestAddr << ": v" << hex << mData << endl;
+            registers.writeRegister(mDestAddr, ((mControl.memToReg) ? mResult : mData));
+            cout << "Write Register 0x" << hex << mDestAddr << ": 0x" << hex << ((mControl.memToReg) ? mResult : mData) << endl;
         }
 
 
@@ -84,11 +98,11 @@ int main() {
         mControl = wControl;
         
         if(wControl.memWrite) {
-            memory.writeMemory(wDestAddr, wData2);
+            memory.writeMemory(wData2, wResult);
             cout << "Write Memory 0x" << hex << wDestAddr << ": 0x" << hex << wData2 << endl;
         }
         if(wControl.memRead) {
-            mData = memory.readMemory(wDestAddr);
+            mData = memory.readMemory(wData2);
             cout << "Read Memory 0x" << hex << wDestAddr << ": 0x" << hex << mData << endl;
         }
         mResult = wResult;
@@ -99,21 +113,28 @@ int main() {
         wControl = eControl;
         wPC = ePC + eJumpAddr;
 
-        wResult = alu.performComputation(eData1, (eControl.aluSrc) ? eJumpAddr : eData2, eControl.aluOperation);
+        wResult = alu.performComputation(eData1, ((eControl.aluSrc) ? eJumpAddr : eData2), eControl.aluOperation);
         wZero = alu.equalsZero();
+
+        //ALU Logging
+        cout << "ALU: 0x" << hex << eData1;
+        cout << ", 0x" << hex <<  ((eControl.aluSrc) ? eJumpAddr : eData2);
+        cout << ", 0x" << hex << eControl.aluOperation;
+        cout << ": 0x" << hex << wResult << endl;
 
         wData2 = eData2;
         wDestAddr = eDestAddr;
 
         //decoder state
         decoder.setCurrentInstruction(dInstruction);
+        //decoder.setCurrentInstruction(0x00004020);
         eControl = decoder.getControlLines();
         ePC = dPC;
 
         eData1 = registers.readRegister(decoder.getAddress1());
         eData2 = registers.readRegister(decoder.getAddress2());
 
-        eJumpAddr = decoder.getBranchAddress() << 16;
+        eJumpAddr = decoder.getBranchAddress();// << 16;
         eDestAddr = decoder.getWriteAddress();
         
 
@@ -128,11 +149,13 @@ int main() {
         }
         dPC = pc.getPC();
         dInstruction = instructionMemory.loadData(dPC);
-        
 
+        cout << "\nRegister Value: 0x" << hex << registers.readRegister(8) << "\n\n";
 
         cout << "Instruction Finished!\n" << endl;
         sleep(1);
+
+        
     }
 }
 
