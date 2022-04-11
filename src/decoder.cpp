@@ -32,8 +32,11 @@ void Decoder::setCurrentInstruction(int inst) {
     //op code - [31:26] (6-bits)
     opCode = 0x3f & (curInstruction >> 26);
 
+    //no instruction
+    if(inst == 0);
+
     //R - type instruction
-    if(opCode == 0) {
+    else if(opCode == 0) {
     //if(1) {
 
         //funct - [5:0] (6-bits)
