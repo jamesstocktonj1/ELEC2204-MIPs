@@ -44,6 +44,8 @@ int dInstruction;
 //execute
 ControlLines eControl;
 int ePC;
+int eDataAddress1;
+int eDataAddress2;
 int eData1;
 int eData2;
 int eJumpAddr;
@@ -62,6 +64,13 @@ ControlLines mControl;
 int mData;
 int mResult;
 int mDestAddr;
+
+//localised data
+int aluData1;
+int aluData2;
+
+
+
 
 
 int instMem[12] = {
@@ -90,7 +99,7 @@ int main() {
         //memory write back
         if(mControl.regWrite) {
             registers.writeRegister(mDestAddr, ((mControl.memToReg) ? mResult : mData));
-            
+
             if(mDestAddr != 0) {
                 cout << "Write Register 0x" << hex << mDestAddr << ": 0x" << hex << ((mControl.memToReg) ? mResult : mData) << endl;
             }
@@ -116,7 +125,28 @@ int main() {
         wControl = eControl;
         wPC = ePC + eJumpAddr;
 
-        wResult = alu.performComputation(eData1, ((eControl.aluSrc) ? eJumpAddr : eData2), eControl.aluOperation);
+        //get alu data (collision control)
+        aluData1 = eData1;
+        aluData2 = (eControl.aluSrc) ? eJumpAddr : eData2;
+
+        //data 1 collision control
+        if(wControl.regWrite && (wDestAddr == eDataAddress1) && (wDestAddr != 0)) {
+            aluData1 = wResult;
+        }
+        else if(mControl.regWrite && (mDestAddr == eDataAddress1) && (mDestAddr != 0)) {
+            aluData1 = mResult;
+        }
+
+        //data 2 colission control
+        if(wControl.regWrite && (wDestAddr == eDataAddress2) && (wDestAddr != 0)) {
+            aluData2 = wResult;
+        }
+        else if(mControl.regWrite && (mDestAddr == eDataAddress2) && (mDestAddr != 0)) {
+            aluData2 = mResult;
+        }
+
+
+        wResult = alu.performComputation(aluData1, aluData2, eControl.aluOperation);
         wZero = alu.equalsZero();
 
         //ALU Logging
@@ -134,12 +164,13 @@ int main() {
         eControl = decoder.getControlLines();
         ePC = dPC;
 
-        eData1 = registers.readRegister(decoder.getAddress1());
-        eData2 = registers.readRegister(decoder.getAddress2());
+        eDataAddress1 = decoder.getAddress1();
+        eDataAddress2 = decoder.getAddress2();
+        eData1 = registers.readRegister(eDataAddress1);
+        eData2 = registers.readRegister(eDataAddress2);
 
         eJumpAddr = decoder.getBranchAddress();// << 16;
         eDestAddr = decoder.getWriteAddress();
-        
 
         //pc state
         if(wControl.branch) {
