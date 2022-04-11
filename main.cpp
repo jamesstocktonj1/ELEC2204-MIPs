@@ -90,10 +90,18 @@ int main() {
     pc.setPC(0);
 
     //instructionMemory.writeMemory(0, 0x00004020);
+    //instructionMemory.writeMemory(1, 0x21080001);
+    //instructionMemory.writeMemory(2, 0x21080001);
+
+    //registers.writeRegister(8, 5);
     instructionMemory.writeMemory(0, 0x21080001);
     instructionMemory.writeMemory(1, 0x21080001);
+    instructionMemory.writeMemory(3, 0x21080001);
+    instructionMemory.writeMemory(4, 0x21080001);
 
-    instructionMemory.writeMemory(2, 0x21080001);
+    
+
+    //instructionMemory.writeMemory(5, 0x21080001);
 
     //instructionMemory.writeMemory(5, 0x0100402a);
 
@@ -109,6 +117,7 @@ int main() {
 
         //memory write back
         if(mControl.regWrite) {
+
             registers.writeRegister(mDestAddr, ((mControl.memToReg) ? mResult : mData));
 
             if(mDestAddr != 0) {
@@ -146,18 +155,20 @@ int main() {
         aluData2 = (eControl.aluSrc) ? eJumpAddr : eData2;
 
         //data 1 collision control
-        if(mControl.regWrite && (mDestAddr == eDataAddress1) && (mDestAddr != 0)) {
+        if(wControl.regWrite && (mDestAddr == eDataAddress1) && (eDataAddress1 != 0)) {
             aluData1 = wResult;
+            cout << "Data Taken: m" << endl;
         }
-        else if(writterRegisterFlag && (writtenRegisterAddress == eDataAddress1) && (writtenRegisterAddress != 0)) {
+        else if(writterRegisterFlag && (writtenRegisterAddress == eDataAddress1) && (eDataAddress1 != 0)) {
             aluData1 = writtenRegister;
+            cout << "Data Taken: w" << endl;
         }
 
         //data 2 colission control
-        if(mControl.regWrite && (mDestAddr == eDataAddress2) && (mDestAddr != 0)) {
+        if(wControl.regWrite && (mDestAddr == eDataAddress2) && (eDataAddress2 != 0) && (eControl.aluSrc == 0)) {
             aluData2 = wResult;
         }
-        else if(writterRegisterFlag && (writtenRegisterAddress == eDataAddress2) && (writtenRegisterAddress != 0)) {
+        else if(writterRegisterFlag && (writtenRegisterAddress == eDataAddress2) && (eDataAddress2 != 0) && (mDestAddr != eDataAddress1)) {
             aluData2 = writtenRegister;
         }
 
@@ -188,6 +199,11 @@ int main() {
         eJumpAddr = decoder.getBranchAddress();// << 16;
         eDestAddr = decoder.getWriteAddress();
 
+        cout << "Decoder: 0x" << hex << eDataAddress1;
+        cout << ", 0x" << hex << eDataAddress2;
+        cout << ", 0x" << hex << eJumpAddr;
+        cout << ", 0x" << hex << eDestAddr << endl;
+
         //set global branch flag
         if(eControl.branch) {
             globalBranch = 1;
@@ -196,25 +212,25 @@ int main() {
         //pc state
         if(wControl.branch) {
             pc.setPC(wPC);
-            dInstruction = instructionMemory.loadData(dPC);
             cout << "Branch: 0x" << hex << wPC << endl;
-        }
-
-        //processor stall - instruction 0
-        else if(globalBranch) {
-            dInstruction = 0;
         }
 
         //normal non-branch mode
         else {
             pc.incrementPC();
-            dInstruction = instructionMemory.loadData(dPC);
             cout << "Increment PC: 0x" << hex << pc.getPC() << endl;
 
             globalBranch = 0;
         }
 
         dPC = pc.getPC();
+        dInstruction = (globalBranch) ? 0 : instructionMemory.loadData(dPC);
+
+        //program finishes at 
+        if((instructionMemory.loadData(dPC) ==  0) && (globalBranch == 0)) {
+            cout << "Program Exit" << endl;
+            return 0;
+        }
 
         cout << "\nRegister Value: 0x" << hex << registers.readRegister(8) << "\n\n";
 
