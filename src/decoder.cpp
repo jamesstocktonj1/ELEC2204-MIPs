@@ -40,7 +40,7 @@ void Decoder::setCurrentInstruction(int inst) {
     //if(1) {
 
         //funct - [5:0] (6-bits)
-        controlLines.aluOperation = inst & 0x3f;
+        controlLines.aluOperation = inst & 0x0f;
 
         //shamt - [10:6] (5-bits)
 
