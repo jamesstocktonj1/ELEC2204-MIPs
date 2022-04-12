@@ -81,6 +81,11 @@ void Decoder::setCurrentInstruction(int inst) {
         controlLines.regWrite = 1;
         controlLines.memToReg = 1;
     }
+
+    //sw instruction
+    else if(opCode == 0x2b) {
+        
+    }
 }
 
 
