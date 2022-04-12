@@ -99,11 +99,12 @@ int main() {
     instructionMemory.writeMemory(1, 0x20040010);       //loop length
     instructionMemory.writeMemory(2, 0x00004820);
     instructionMemory.writeMemory(3, 0x00005020);       //clear square value
-    instructionMemory.writeMemory(4, 0x01485020);       //add t0 
+    //instructionMemory.writeMemory(4, 0x010a5020);       //add t2
+    instructionMemory.writeMemory(4, 0x214a0005);       //increment t2
     instructionMemory.writeMemory(5, 0x21290001);
     instructionMemory.writeMemory(6, 0x0128082a);
     instructionMemory.writeMemory(7, 0x14200004);       //jump 1
-    instructionMemory.writeMemory(8, 0xafaa0000);
+    instructionMemory.writeMemory(8, 0xafaa0000);       //store word
     instructionMemory.writeMemory(9, 0x21080001);
     instructionMemory.writeMemory(10, 0x23bd0001);
     instructionMemory.writeMemory(11, 0x0104082a);
