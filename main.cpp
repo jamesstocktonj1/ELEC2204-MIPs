@@ -99,8 +99,8 @@ int main() {
     instructionMemory.writeMemory(1, 0x20040010);       //loop length
     instructionMemory.writeMemory(2, 0x00004820);
     instructionMemory.writeMemory(3, 0x00005020);       //clear square value
-    //instructionMemory.writeMemory(4, 0x010a5020);       //add t2
-    instructionMemory.writeMemory(4, 0x214a0005);       //increment t2
+    instructionMemory.writeMemory(4, 0x010a5020);       //add t2
+    //instructionMemory.writeMemory(4, 0x214a0005);       //increment t2
     instructionMemory.writeMemory(5, 0x21290001);
     instructionMemory.writeMemory(6, 0x0128082a);
     instructionMemory.writeMemory(7, 0x14200004);       //jump 1
@@ -326,7 +326,7 @@ int main() {
         cout << "$sp: 0x" << hex << registers.readRegister(29) << "\n";
 
         cout << "Instruction Finished!\n" << endl;
-        sleep(1);
+        //sleep(1);
         
     }
 }
