@@ -96,6 +96,7 @@ int main() {
     //registers.writeRegister(8, 5);
     instructionMemory.writeMemory(0, 0x21080001);
     instructionMemory.writeMemory(1, 0x21080001);
+    instructionMemory.writeMemory(0, 0x21080001);
     instructionMemory.writeMemory(3, 0x21080001);
     instructionMemory.writeMemory(4, 0x21080001);
 
@@ -229,7 +230,7 @@ int main() {
         //program finishes at 
         if((instructionMemory.loadData(dPC) ==  0) && (globalBranch == 0)) {
             cout << "Program Exit" << endl;
-            return 0;
+            //return 0;
         }
 
         cout << "\nRegister Value: 0x" << hex << registers.readRegister(8) << "\n\n";
