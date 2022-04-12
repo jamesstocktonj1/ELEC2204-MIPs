@@ -6,6 +6,7 @@
 typedef struct t_ControlLines {
     int regDst = 0;
     int branch = 0;
+    int branchValue = 0;
     int memRead = 0;
     int memToReg = 0;
     int aluOperation = 0;

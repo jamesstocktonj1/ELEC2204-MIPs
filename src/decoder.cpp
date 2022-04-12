@@ -84,7 +84,46 @@ void Decoder::setCurrentInstruction(int inst) {
 
     //sw instruction
     else if(opCode == 0x2b) {
-        
+
+        //alu - add operation
+        controlLines.aluOperation = 0x0;
+
+        //constant - [15:0] unused
+        branchAddress = inst & 0xff;
+
+        //rt - [20:16] value
+        address2 = 0x1f & (inst >> 16);
+
+        //rs - [25:21] address
+        address1 = 0x1f & (inst >> 21);
+
+        //aluResult = rs + branchAddress = rs
+        //branchAddress = 0x0;
+
+
+        //set flow control
+        controlLines.aluSrc = 1;
+        controlLines.memWrite = 1;
+    }
+
+    //bne command
+    else if(opCode == 0x5) {
+
+        //alu - no operation (equal values?)
+        controlLines.aluOperation = 0x0;
+
+        //jump address
+        branchAddress = inst & 0xff;
+
+        //rt - [20:16]
+        address1 = 0x1f & (inst >> 16);
+
+        //rs - [25:21]
+        address2 = 0x1f & (inst >> 21);
+
+        //set flow control
+        controlLines.branch = 1;
+        controlLines.branchValue = 0;
     }
 }
 
