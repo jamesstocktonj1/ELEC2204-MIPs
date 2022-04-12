@@ -123,7 +123,7 @@ void Decoder::setCurrentInstruction(int inst) {
 
         //set flow control
         controlLines.branch = 1;
-        controlLines.branchValue = 1;
+        controlLines.branchValue = 0;
     }
 }
 
