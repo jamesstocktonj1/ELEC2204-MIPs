@@ -10,7 +10,7 @@ Registers::Registers() {
 
 Registers::~Registers() {
 
-    free(memory);
+    free((int *)memory);
 }
 
 int Registers::readRegister(int addr) {
