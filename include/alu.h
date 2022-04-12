@@ -23,6 +23,7 @@ public:
 
     int performComputation(int value1, int value2, int operation);
     int equalsZero(void);
+    int valuesEqual(int value1, int value2);
 
     ~ALU();
 
