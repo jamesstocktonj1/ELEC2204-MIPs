@@ -2,6 +2,7 @@
 #define DATAMEMORY_H
 
 #define MEMORY_SIZE 256
+//#define DUMP_HEX 
 
 
 class Memory {
