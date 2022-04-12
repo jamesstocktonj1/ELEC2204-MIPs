@@ -51,3 +51,8 @@ int ALU::equalsZero() {
 
     return (aluResult == 0);
 }
+
+int ALU::valuesEqual(int value1, int value2) {
+
+    return (value1 == value2);
+}
