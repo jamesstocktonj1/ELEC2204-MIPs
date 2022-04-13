@@ -37,9 +37,16 @@ void Memory::dumpFile() {
     memoryFile.open("memoryDump.txt", std::ios::out);
 
     for(int i=0; i<MEMORY_SIZE; i++) {
-        
+
+#ifdef DUMP_HEX
         sprintf(temp, "0x%04x", memory[i]);
         memoryFile << temp << " ";
+#else
+        sprintf(temp, "% 5d", memory[i]);
+        memoryFile << temp;
+#endif
+
+        
 
         if(((i + 1) % 16) == 0) {
             memoryFile << "\n";

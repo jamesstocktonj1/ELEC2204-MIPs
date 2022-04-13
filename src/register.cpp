@@ -1,11 +1,13 @@
 #include "../include/register.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 
 Registers::Registers() {
 
-    memory = (int *)malloc(REGISTER_SIZE);
+    memory = (int *)malloc(REGISTER_SIZE * sizeof(int));
+    memset(memory, 0, REGISTER_SIZE);
 }
 
 Registers::~Registers() {

@@ -1,13 +1,13 @@
 #include "../include/instructionMemory.h"
 
 #include <stdlib.h>
-#include <iostream>
-#include <fstream>
+#include <string.h>
 
 
 InstructionMemory::InstructionMemory() {
 
-    memory = (int *)malloc(INSTRUCTION_MEMORY_SIZE);
+    memory = (int *)malloc(INSTRUCTION_MEMORY_SIZE * sizeof(int));
+    memset(memory, 0, INSTRUCTION_MEMORY_SIZE);
 }
 
 InstructionMemory::~InstructionMemory() {
@@ -18,12 +18,6 @@ InstructionMemory::~InstructionMemory() {
 int InstructionMemory::loadData(int address) {
 
     return memory[address];
-}
-
-void InstructionMemory::loadFromFile(char *fileName) {
-
-    std::ifstream file;
-    file.open(fileName);
 }
 
 void InstructionMemory::writeMemory(int address, int value) {
