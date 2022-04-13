@@ -42,7 +42,7 @@ void Memory::dumpFile() {
         sprintf(temp, "0x%04x", memory[i]);
         memoryFile << temp << " ";
 #else
-        sprintf(temp, "% 4d", memory[i]);
+        sprintf(temp, "% 5d", memory[i]);
         memoryFile << temp;
 #endif
 
