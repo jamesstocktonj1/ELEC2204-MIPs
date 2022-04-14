@@ -141,8 +141,8 @@ bool testPC() {
         passTest = false;
     }
 
-    if(incrementedValue != 4) {
-        cout << "PC failed to increment by 4" << endl;
+    if(incrementedValue != 1) {
+        cout << "PC failed to increment by 1" << endl;
         passTest = false;
     }
 
@@ -212,7 +212,7 @@ bool testALU() {
         passTest = false;
     }
 
-    if(sltResult != ((valueA < valueB) ? 0xFF : 0x00)) {
+    if(sltResult != ((valueA > valueB) ? 1 : 0)) {
         cout << "SLT failed" << endl;
         passTest = false;
     }
