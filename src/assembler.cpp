@@ -53,10 +53,10 @@ void loadFromFile(const char* file, InstructionMemory *mem) {
                 std::cout << inst.opcode << "\trd: " << inst.rd << "\trs: " << inst.rs << "\trt: " << inst.rt << std::endl;
                 
                 //rs - [25:21]
-                curInstruction += (0x1f & inst.rs) << 21;
+                curInstruction += (0x1f & inst.rt) << 21;
 
                 //rt - [20:16]
-                curInstruction += (0x1f & inst.rt) << 16;
+                curInstruction += (0x1f & inst.rs) << 16;
 
                 //rd - [15:11]
                 curInstruction += (0x1f & inst.rd) << 11;
@@ -64,13 +64,14 @@ void loadFromFile(const char* file, InstructionMemory *mem) {
                 //shamt - [10:6] = 0
 
                 //function - [5:0]
-                curInstruction += (0x1f & getALU(inst.opcode));
+                curInstruction += (0x3f & getALU(inst.opcode));
                 break;
             }
 
             std::cout << "Hex Instruction: 0x" << std::hex << curInstruction << std::endl;
 
             mem->writeMemory(j, curInstruction);
+            j++;
 
             //mem->writeMemory(j, parseInstruction(buf));
             i = 0;
