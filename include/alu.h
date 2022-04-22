@@ -12,10 +12,6 @@
 #define NOR_OP 0b1100
 
 
-/**
- * @brief 
- * 
- */
 class ALU {
 
 public:
