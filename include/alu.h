@@ -2,7 +2,6 @@
 #define ALU_H
 
 
-
 //operation constants
 #define AND_OP 0b0010
 #define OR_OP 0b0001
