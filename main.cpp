@@ -1,6 +1,8 @@
 #include <iostream>
 #include <unistd.h>
 
+#include "include/assembler.h"
+
 //fetch
 #include "include/pc.h"
 #include "include/instructionMemory.h"
@@ -23,6 +25,9 @@ using namespace std;
 //program defines
 //#define STEP_THROUGH
 //#define VERBOSE
+#define ASSEMBLE
+
+void manualProgramLoad(void);
 
 
 //define main MIPS Processor blocks
@@ -81,24 +86,11 @@ int globalBranch;
 
 int main() {
 
-    cout << "Int Size: " << sizeof(int) << endl;
-
-    //final program
-    instructionMemory.writeMemory(0, 0x00004020);
-    instructionMemory.writeMemory(1, 0x200400c8);       //loop length
-    instructionMemory.writeMemory(2, 0x00004820);
-    instructionMemory.writeMemory(3, 0x00005020);       //clear square value
-    instructionMemory.writeMemory(4, 0x010a5020);       //add t2
-    instructionMemory.writeMemory(5, 0x21290001);
-    instructionMemory.writeMemory(6, 0x0128082a);
-    instructionMemory.writeMemory(7, 0x14200004);       //jump 1
-    //instructionMemory.writeMemory(8, 0xafaa0000);       //store word ($sp)
-    instructionMemory.writeMemory(8, 0xad0a0000);       //store word ($t0)
-    instructionMemory.writeMemory(9, 0x21080001);
-    //instructionMemory.writeMemory(10, 0x23bd0001);        //increment $sp
-    instructionMemory.writeMemory(10, 0x0104082a);
-    instructionMemory.writeMemory(11, 0x14200002);       //jump 2
-
+	#ifdef ASSEMBLE
+	loadFromFile("asm/MIPsBasicSquares.asm", &instructionMemory);
+	#else
+    manualProgramLoad();
+	#endif
     
     //setup values
     pc.setPC(0);
@@ -299,3 +291,21 @@ int main() {
 
 
 
+void manualProgramLoad() {
+
+	//final program
+    instructionMemory.writeMemory(0, 0x00004020);
+    instructionMemory.writeMemory(1, 0x200400c8);       //loop length
+    instructionMemory.writeMemory(2, 0x00004820);
+    instructionMemory.writeMemory(3, 0x00005020);       //clear square value
+    instructionMemory.writeMemory(4, 0x010a5020);       //add t2
+    instructionMemory.writeMemory(5, 0x21290001);
+    instructionMemory.writeMemory(6, 0x0128082a);
+    instructionMemory.writeMemory(7, 0x14200004);       //jump 1
+    //instructionMemory.writeMemory(8, 0xafaa0000);       //store word ($sp)
+    instructionMemory.writeMemory(8, 0xad0a0000);       //store word ($t0)
+    instructionMemory.writeMemory(9, 0x21080001);
+    //instructionMemory.writeMemory(10, 0x23bd0001);        //increment $sp
+    instructionMemory.writeMemory(10, 0x0104082a);
+    instructionMemory.writeMemory(11, 0x14200002);       //jump 2
+}
