@@ -10,6 +10,7 @@
 
 
 #define BUFFER_SIZE 32
+#define OPCODE_SIZE 5
 
 typedef enum {
     IType,
@@ -19,7 +20,7 @@ typedef enum {
 
 
 typedef struct t_Instruction {
-    char opcode[5];
+    char opcode[OPCODE_SIZE];
     InstructionType instructionType;
     int rs = 1;
     int rt = 2;
