@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "../include/instructionMemory.h"
+#include "../include/alu.h"
 
 
 #define BUFFER_SIZE 32
@@ -31,6 +32,8 @@ void loadFromFile(const char* file, InstructionMemory *mem);
 Instruction getInstruction(char* inst);
 
 InstructionType getType(char* opcode);
+int getOpcode(char* opcode);
+int getALU(char* opcode);
 
 int charToInt(char* num);
 
