@@ -38,14 +38,14 @@ void Memory::dumpFile() {
 
     for(int i=0; i<MEMORY_SIZE; i++) {
 
-#ifdef DUMP_HEX
+        #ifdef DUMP_HEX
         sprintf(temp, "0x%04x", memory[i]);
         memoryFile << temp << " ";
-#else
-        sprintf(temp, "% 5d", memory[i]);
-        memoryFile << temp;
-#endif
 
+        #else
+        sprintf(temp, "% 6d", memory[i]);
+        memoryFile << temp;
+        #endif
         
 
         if(((i + 1) % 16) == 0) {

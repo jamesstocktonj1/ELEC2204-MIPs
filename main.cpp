@@ -3,18 +3,11 @@
 
 #include "include/assembler.h"
 
-//fetch
 #include "include/pc.h"
 #include "include/instructionMemory.h"
-
-//decode
 #include "include/decoder.h"
 #include "include/register.h"
-
-//execute
 #include "include/alu.h"
-
-//writeback
 #include "include/dataMemory.h"
 
 
@@ -86,6 +79,7 @@ int globalBranch;
 
 int main() {
 
+	//either load from assembler or manual write to instruction memory
 	#ifdef ASSEMBLE
 	loadFromFile("asm/MIPsBasicSquares.asm", &instructionMemory);
 	#else
@@ -108,11 +102,11 @@ int main() {
             registers.writeRegister(mDestAddr, ((mControl.memToReg) ? mResult : mData));
 
             //log if not writing to $zero
-#ifdef VERBOSE
+			#ifdef VERBOSE
             if(mDestAddr != 0) {
                 cout << "Write Register 0x" << hex << mDestAddr << ": 0x" << hex << ((mControl.memToReg) ? mResult : mData) << endl;
             }
-#endif
+			#endif
         }
         
         //collision control stored values
@@ -127,16 +121,18 @@ int main() {
         //handle memory write
         if(wControl.memWrite) {
             memory.writeMemory(wResult, wData2);
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Write Memory 0x" << hex << wResult << ": 0x" << hex << wData2 << endl;
-#endif
+			#endif
         }
         //handle memory read
         if(wControl.memRead) {
             mData = memory.readMemory(wData2);
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Read Memory 0x" << hex << wDestAddr << ": 0x" << hex << mData << endl;
-#endif
+			#endif
         }
         mResult = wResult;
         mDestAddr = wDestAddr;
@@ -153,29 +149,33 @@ int main() {
         //data 1 collision control
         if(mControl.regWrite && (mDestAddr == eDataAddress1) && (eDataAddress1 != 0)) {
             aluData1 = wResult;
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Data 1: wResult 0x" << hex << aluData1 << endl;
-#endif
+			#endif
         }
         else if(writterRegisterFlag && (writtenRegisterAddress == eDataAddress1) && (eDataAddress1 != 0)) {
             aluData1 = writtenRegister;
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Data 1: writtenRegister 0x" << hex << aluData1 << endl;
-#endif
+			#endif
         }
 
         //data 2 colission control
         if(mControl.regWrite && (mDestAddr == eDataAddress2) && (eDataAddress2 != 0)) {
             aluData2 = wResult;
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Data 2: wResult 0x" << hex << aluData2 << endl;
-#endif
+			#endif
         }
         else if(writterRegisterFlag && (writtenRegisterAddress == eDataAddress2) && (eDataAddress2 != 0)) {
             aluData2 = writtenRegister;
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Data 2: writtenRegister 0x" << hex << aluData2 << endl;
-#endif
+			#endif
         }
 
         wData2 = aluData2;
@@ -184,13 +184,13 @@ int main() {
         wResult = alu.performComputation(aluData1, aluData2, eControl.aluOperation);
         wZero = alu.valuesEqual(aluData1, aluData2);
 
-#ifdef VERBOSE
+		#ifdef VERBOSE
         //ALU Logging
         cout << "ALU: 0x" << hex << aluData1;
         cout << ", 0x" << hex <<  aluData2;
         cout << ", 0x" << hex << eControl.aluOperation;
         cout << ": 0x" << hex << wResult << endl;
-#endif
+		#endif
 
         wDestAddr = eDestAddr;
 
@@ -208,19 +208,20 @@ int main() {
         eJumpAddr = decoder.getBranchAddress();// << 16;
         eDestAddr = decoder.getWriteAddress();
 
-#ifdef VERBOSE
+		#ifdef VERBOSE
         cout << "Decoder: 0x" << hex << eDataAddress1;
         cout << ", 0x" << hex << eDataAddress2;
         cout << ", 0x" << hex << eJumpAddr;
         cout << ", 0x" << hex << eDestAddr << endl;
-#endif
+		#endif
 
         //set global branch flag
         if(eControl.branch) {
             globalBranch = 1;
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Start Stall" << endl;
-#endif
+			#endif
         }
 
 
@@ -228,35 +229,39 @@ int main() {
 
         //take branch
         if(wControl.branch && (wControl.branchValue == wZero)) {
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Branch: 0x" << hex << wPC << endl;
             cout << "0x" << hex << aluData1 << ", 0x" << hex << aluData2 << endl;
-#endif
+			#endif
             pc.setPC(wPC);
             globalBranch = 0;
         }
         //dont take branch
         else if(wControl.branch) {
             globalBranch = 0;
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Branch Not Taken" << endl;
             cout << "0x" << hex << aluData1 << ", 0x" << hex << aluData2 << endl;
-#endif
+			#endif
             pc.incrementPC();
         }
 
         //no branch but stalled
         else if(globalBranch) {
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Processor Stall" << endl;
-#endif
+			#endif
         }
         //normal no branch
         else {
             pc.incrementPC();
-#ifdef VERBOSE
+
+			#ifdef VERBOSE
             cout << "Increment PC: 0x" << hex << pc.getPC() << endl;
-#endif
+			#endif
         }
 
         //retrieve current pc and instruction
@@ -272,7 +277,7 @@ int main() {
             return 0;
         }
 
-#ifdef VERBOSE
+		#ifdef VERBOSE
         cout << "$a0: 0x" << hex << registers.readRegister(4) << "\n";
         cout << "$t0: 0x" << hex << registers.readRegister(8) << "\n";
         cout << "$t1: 0x" << hex << registers.readRegister(9) << "\n";
@@ -280,12 +285,12 @@ int main() {
         cout << "$sp: 0x" << hex << registers.readRegister(29) << "\n";
 
         cout << "Instruction Finished!\n" << endl;
-#endif
+		#endif
         
 
-#ifdef STEP_THROUGH
+		#ifdef STEP_THROUGH
         sleep(1);
-#endif
+		#endif
     }
 }
 

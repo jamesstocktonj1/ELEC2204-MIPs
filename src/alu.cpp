@@ -10,10 +10,11 @@ ALU::~ALU() {
 
 }
 
+
 int ALU::performComputation(int value1, int value2, int operation) {
 
+    //execute arithmetic based on operation
     switch(operation) {
-
         case AND_OP:
             aluResult = value1 & value2;
             break;
@@ -39,10 +40,9 @@ int ALU::performComputation(int value1, int value2, int operation) {
             break;
 
         default:
-            return 0;
+            aluResult = 0;
             break;
     }
-
 
     return aluResult;
 }
