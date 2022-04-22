@@ -19,7 +19,7 @@ typedef enum {
 
 
 typedef struct t_Instruction {
-    char *opcode;
+    char opcode[5];
     InstructionType instructionType;
     int rs = 1;
     int rt = 2;
