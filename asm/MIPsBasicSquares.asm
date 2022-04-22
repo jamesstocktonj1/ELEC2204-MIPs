@@ -11,4 +11,3 @@ addi $t0, $t0, 1
 addi $sp, $sp, 4
 slt $at, $t0, $a0
 bne $at, $zero, L1
-beq $t0, $a0, L1
