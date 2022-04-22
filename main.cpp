@@ -1,6 +1,8 @@
 #include <iostream>
 #include <unistd.h>
 
+#include "include/assembler.h"
+
 //fetch
 #include "include/pc.h"
 #include "include/instructionMemory.h"
@@ -81,6 +83,15 @@ int globalBranch;
 
 int main() {
 
+	#if 1
+	loadFromFile("asm/MIPsBasicSquares.asm", &instructionMemory);
+
+
+	//cout << "Register Value: " << instructionMemory.loadData(0) << endl;
+
+	//return 0;
+
+	#else
     cout << "Int Size: " << sizeof(int) << endl;
 
     //final program
@@ -99,6 +110,7 @@ int main() {
     instructionMemory.writeMemory(10, 0x0104082a);
     instructionMemory.writeMemory(11, 0x14200002);       //jump 2
 
+	#endif
     
     //setup values
     pc.setPC(0);
@@ -107,7 +119,16 @@ int main() {
     //load first instruction
     dInstruction = instructionMemory.loadData(0);
 
+	int i;
+	for(i=0; i<12; i++) {
+		cout << "Instruction " << i << ": 0x" << hex << instructionMemory.loadData(i) << endl;
+	}
+
+	//return 0;
+
     while(1) {
+
+		// /return 0;
 
         //memory write back
         if(mControl.regWrite) {
@@ -296,6 +317,3 @@ int main() {
 #endif
     }
 }
-
-
-
