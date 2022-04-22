@@ -99,13 +99,12 @@ Instruction getInstruction(char* inst) {
             else if(point == 1) {
                 int tempNum = charToInt(temp);
 
+                ins.rs = tempNum;
+                ins.constant = tempNum;
+
                 if(ins.instructionType == JType) {
-                    ins.constant = tempNum;
                     return ins;
 
-                }
-                else {
-                    ins.rs = tempNum;
                 }
             }
 
@@ -120,14 +119,9 @@ Instruction getInstruction(char* inst) {
             else if(point == 3) {
                 int tempNum = charToInt(temp);
 
-                if(ins.instructionType == IType) {
-                    ins.constant = tempNum;
-                    return ins;
-                }
-                else {
-                    ins.rd = tempNum;
-                    return ins;
-                }
+                ins.constant = tempNum;
+                ins.rd = tempNum;
+                return ins;
             }
             point++;
         }
@@ -145,7 +139,17 @@ Instruction getInstruction(char* inst) {
 
 int charToInt(char* num) {
 
-    return 10;
+    //handle hex number
+    if(num[0] == '0' && num[1] == 'x') {
+        return strtol(num, NULL, 16);
+    }
+
+    //handle decimal number
+    else {
+        return strtol(num, NULL, 10);
+    }
+
+    return 0xff;
 }
 
 InstructionType getType(char* opcode) {
