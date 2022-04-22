@@ -5,118 +5,103 @@
 void loadFromFile(const char* file, InstructionMemory *mem) {
     FILE *f;
 
+    //temporary char and buffer (file read)
     char c;
     char buf[BUFFER_SIZE];
-    char temp[4][8];
 
-    //temp = (char *)malloc(sizeof(char*) * 4 * 8);
-
+    //buffer point
     int i = 0;
+
+    //instruction memory point
     int j = 0;
 
-
+    //open file as read
     f = fopen(file, "r");
 
-
     c = fgetc(f);
+
+    //loop through file
     while(c != EOF) {
 
+        //if end of line then process buffer
         if(c == '\n') {
             buf[i] = '\0';
+            i = 0;
 
+            //deconstruct instruction from char buffer
             Instruction inst = getInstruction(buf);
             int curInstruction = 0;
-            std::cout << "Opcode: 0x" << std::hex << getOpcode(inst.opcode) << std::endl;
-            std::cout << "ALU Op 0x" << std::hex << getALU(inst.opcode) << std::endl;
 
             //begin construct instruction
             curInstruction = (0x3f & getOpcode(inst.opcode)) << 26;
 
+            //construct instruction depending on type
             switch (inst.instructionType) {
-
-            case IType:
-                std::cout << inst.opcode << "\trt: " << inst.rt << "\trs: " << inst.rs << "\tConst: " << inst.constant << std::endl;
                 
-                //rs - [25:21]
-                curInstruction += (0x1f & inst.rs) << 21;
+                case IType:
+                    //rs - [25:21]
+                    curInstruction += (0x1f & inst.rs) << 21;
 
-                //rt - [20:16]
-                curInstruction += (0x1f & inst.rt) << 16;
+                    //rt - [20:16]
+                    curInstruction += (0x1f & inst.rt) << 16;
 
-                //constant - [15:0]
-                curInstruction += (0xff & inst.constant);
-                break;
-            case JType:
-                std::cout << inst.opcode << "\tJump: " << inst.constant << std::endl;
-                break;
-            case RType:
-                std::cout << inst.opcode << "\trd: " << inst.rd << "\trs: " << inst.rs << "\trt: " << inst.rt << std::endl;
-                
-                //rs - [25:21]
-                curInstruction += (0x1f & inst.rt) << 21;
+                    //constant - [15:0]
+                    curInstruction += (0xff & inst.constant);
+                    break;
 
-                //rt - [20:16]
-                curInstruction += (0x1f & inst.rs) << 16;
+                case JType:
+                    break;
 
-                //rd - [15:11]
-                curInstruction += (0x1f & inst.rd) << 11;
+                case RType:
+                    //rs - [25:21]
+                    curInstruction += (0x1f & inst.rt) << 21;
 
-                //shamt - [10:6] = 0
+                    //rt - [20:16]
+                    curInstruction += (0x1f & inst.rs) << 16;
 
-                //function - [5:0]
-                curInstruction += (0x3f & getALU(inst.opcode));
-                break;
+                    //rd - [15:11]
+                    curInstruction += (0x1f & inst.rd) << 11;
+
+                    //shamt - [10:6] = 0
+
+                    //function - [5:0]
+                    curInstruction += (0x3f & getALU(inst.opcode));
+                    break;
             }
 
             std::cout << "Hex Instruction: 0x" << std::hex << curInstruction << std::endl;
 
             mem->writeMemory(j, curInstruction);
             j++;
-
-            //mem->writeMemory(j, parseInstruction(buf));
-            i = 0;
-            std::cout << std::endl;
         }
+        //ignore character
         else if(c == '\r');
+
+        //add character to buffer
         else {
             buf[i] = c;
             i++;
         }
 
-        //std::cout << c;
         c = fgetc(f);
     }
-
-    std::cout << "End of File" << std::endl;
     fclose(f);
-
-    //mem->writeMemory(0, 10);
 }
 
-
-int parseInstruction(char* inst) {
-
-    char temp[BUFFER_SIZE] = "";
-    int i;
-
-    for(i=0; i<strlen(inst); i++) {
-        std::cout << inst[i];
-    }
-
-    std::cout << std::endl;
-    return 10;
-}
 
 Instruction getInstruction(char* inst) {
     Instruction ins;
 
-    std::cout << "Decode Instruction: " << inst << std::endl;
-
+    //temporary character and pointer
     char temp[BUFFER_SIZE];
-    int i;
-
     int j = 0;
+
+    //pointer to instruction character
+    int i;
+    
+    //point in assembly instruction
     int point = 0;
+
 
     for(i=0; i<strlen(inst); i++) {
 
@@ -127,6 +112,7 @@ Instruction getInstruction(char* inst) {
             inst[i] = ' ';
         }
 
+        //if end character then process buffer
         if(inst[i] == ' ' || i == (strlen(inst) - 1)) {
             temp[j] = '\0';
             j = 0;
@@ -174,11 +160,15 @@ Instruction getInstruction(char* inst) {
             }
             point++;
         }
+
+        //ignore characters
         else if(inst[i] == ',');
         else if(inst[i] == '\r');
         else if(inst[i] == '\n');
         else if(inst[i] == '(');
         else if(inst[i] == ')');
+
+        //add character to buffer
         else {
             temp[j] = inst[i];
             j++;
@@ -271,42 +261,3 @@ int getALU(char* opcode) {
         return 0;
     }
 }
-
-
-/*
-void splitLine(char* inst, char* data[]) {
-
-    //char data[6][8];
-    char temp[8];
-    int i, j, k;
-
-    //temp array pointer
-    j = 0;
-
-    //lines array pointer
-    k = 0;
-
-    std::cout << "String Length: " << strlen(inst) << std::endl;
-
-    for(i=0; i<strlen(inst); i++) {
-
-        
-        if(inst[i] == ' ') {
-            //temp[j] = '\0';
-            strcpy(data[k], temp);
-            std::cout << temp << std::endl;
-            k++;
-            j = 0;
-        }
-        else if(inst[i] == ',');
-        else {
-            temp[j] = inst[i];
-            //std::cout << inst[i] << std::endl;
-            j++;
-        }
-    }
-    strcpy(data[k], temp);
-
-    //std::cout << data << std::endl;
-}
-*/
