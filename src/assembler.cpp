@@ -36,14 +36,11 @@ void loadFromFile(const char* file, InstructionMemory *mem) {
                 break;
             case RType:
                 std::cout << inst.opcode << "\trs: " << inst.rs << "\trt: " << inst.rt << "\trd: " << inst.rd << std::endl;
-            
-            default:
-                std::cout << "Error No Instruction" << std::endl;
-                break;
             }
 
             //mem->writeMemory(j, parseInstruction(buf));
             i = 0;
+            std::cout << std::endl;
         }
         else if(c == '\r');
         else {
@@ -77,6 +74,8 @@ int parseInstruction(char* inst) {
 
 Instruction getInstruction(char* inst) {
     Instruction ins;
+
+    std::cout << "Decode Instruction: " << inst << std::endl;
 
     char temp[BUFFER_SIZE];
     int i;
