@@ -22,6 +22,9 @@ using namespace std;
 
 void manualProgramLoad(void);
 
+void addiTest(void);
+void branchTest(void);
+
 
 //define main MIPS Processor blocks
 PC pc;
@@ -75,6 +78,8 @@ int writterRegisterFlag;
 
 int globalBranch;
 
+int instructionCount;
+
 
 
 int main() {
@@ -84,6 +89,8 @@ int main() {
 	loadFromFile("asm/MIPsBasicSquares.asm", &instructionMemory);
 	#else
     manualProgramLoad();
+    //addiTest();
+    //branchTest();
 	#endif
     
     //setup values
@@ -93,7 +100,10 @@ int main() {
     //load first instruction
     dInstruction = instructionMemory.loadData(0);
 
+    instructionCount = 0;
+
     while(1) {
+        instructionCount++;
 
         //memory write back
         if(mControl.regWrite) {
@@ -243,7 +253,6 @@ int main() {
 
 			#ifdef VERBOSE
             cout << "Branch Not Taken" << endl;
-            cout << "0x" << hex << aluData1 << ", 0x" << hex << aluData2 << endl;
 			#endif
             pc.incrementPC();
         }
@@ -270,6 +279,8 @@ int main() {
 
         //handle program finish ()
         if((dPC == 0x10) && (globalBranch == 0)) {
+
+            cout << "Total Instruction Count: " << dec << instructionCount << endl;
 
             cout << "Dumping Memory" << endl;
             memory.dumpFile();
@@ -313,4 +324,20 @@ void manualProgramLoad() {
     //instructionMemory.writeMemory(10, 0x23bd0001);        //increment $sp
     instructionMemory.writeMemory(10, 0x0104082a);
     instructionMemory.writeMemory(11, 0x14200002);       //jump 2
+}
+
+
+void addiTest() {
+
+    instructionMemory.writeMemory(0, 0x20080005);
+    instructionMemory.writeMemory(1, 0x21290001);
+    instructionMemory.writeMemory(2, 0x15090001);
+}
+
+void branchTest() {
+
+    instructionMemory.writeMemory(0, 0x21290001);
+    instructionMemory.writeMemory(1, 0x21290001);
+
+    instructionMemory.writeMemory(3, 0x21290001);
 }
