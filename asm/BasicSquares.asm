@@ -8,7 +8,7 @@ L2: add $t2, $t2, $t0			# add initial
 addi $t1, $t1, 1		# increment inner for loop
 slt $at, $t1, $t0		# set if inner for loop is less than outer
 bne $at, $zero, L2		# branch inner for loop
-sw $t2, ($sp)			# save square to memory
+sw $t2, ($t0)			# save square to memory
 addi $t0, $t0, 1		# increment outer for loop
 addi $sp, $sp, 4		# increment memory location
 slt $at, $t0, $a0		# set if outer for loop is less than max square ($a0)
