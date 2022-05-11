@@ -11,7 +11,7 @@
 
 #compiler constants
 CC = gcc
-CFLAGS = -lstdc++
+CFLAGS = -lstdc++ -Os
 TARGET = main
 TEST = $(TARGET).test
 
