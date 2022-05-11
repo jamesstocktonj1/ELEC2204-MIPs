@@ -20,10 +20,13 @@ using namespace std;
 //#define VERBOSE
 #define ASSEMBLE
 
+//manually loaded programs
 void manualProgramLoad(void);
-
 void addiTest(void);
 void branchTest(void);
+
+
+int 
 
 
 //define main MIPS Processor blocks
@@ -86,12 +89,22 @@ int main() {
 
 	//either load from assembler or manual write to instruction memory
 	#ifdef ASSEMBLE
-	loadFromFile("asm/MIPsBasicSquares.asm", &instructionMemory);
+	//loadFromFile("asm/MIPsBasicSquares.asm", &instructionMemory);
 	#else
     manualProgramLoad();
     //addiTest();
     //branchTest();
 	#endif
+
+    char inputBuffer[32];
+    
+    //cin >> inputBuffer;
+    //getline(cin, inputBuffer);
+    cin.getline(inputBuffer, 32);
+
+    cout << "Input: " << inputBuffer << endl;
+
+    return 0;
     
     //setup values
     pc.setPC(0);
