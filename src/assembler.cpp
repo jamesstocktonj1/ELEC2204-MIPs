@@ -69,8 +69,7 @@ void loadFromFile(const char* file, InstructionMemory *mem) {
                     break;
             }
 
-            std::cout << "Hex Instruction: 0x" << std::hex << curInstruction << std::endl;
-
+            std::cout << "Hex Instruction: 0x" << std::hex << std::setfill('0') << std::setw(8) << curInstruction << std::endl;
             mem->writeMemory(j, curInstruction);
             j++;
         }
