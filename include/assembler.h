@@ -2,6 +2,7 @@
 #define ASSEMBLER_H
 
 #include <iostream>
+#include <iomanip>
 #include <cstring>
 #include <stdio.h>
 
