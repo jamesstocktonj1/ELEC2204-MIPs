@@ -25,6 +25,9 @@ void manualProgramLoad(void);
 void addiTest(void);
 void branchTest(void);
 
+void printHelp(void);
+int parseArguments(char **argv, int argc);
+
 
 //define main MIPS Processor blocks
 PC pc;
@@ -81,12 +84,21 @@ int globalBranch;
 int instructionCount;
 
 
+char assemblyFile[32] = "asm/MIPsBasicSquares.asm";
 
-int main() {
+
+
+int main(int argc, char **argv) {
+
+    if(parseArguments(argv, argc)) {
+        return 0;
+    }
+
+    return 0;
 
 	//either load from assembler or manual write to instruction memory
 	#ifdef ASSEMBLE
-	loadFromFile("asm/MIPsBasicSquares.asm", &instructionMemory);
+	loadFromFile(assemblyFile, &instructionMemory);
 	#else
     manualProgramLoad();
     //addiTest();
@@ -340,4 +352,45 @@ void branchTest() {
     instructionMemory.writeMemory(1, 0x21290001);
 
     instructionMemory.writeMemory(3, 0x21290001);
+}
+
+
+
+
+void printHelp() {
+
+    cout << "MIPs Processor" << endl;
+    cout << "\t-a <file>\t- changes the assembly program which is loaded into memory" << endl;
+    cout << "\t-c\t\t- puts the processor into console mode allowing you to input commands" << endl;
+}
+
+
+int parseArguments(char **argv, int argc) {
+
+
+    for(int i=1; i<argc; i++) {
+
+        if(argv[i][0] == '-') {
+            switch(argv[i][1]) {
+                case 'a':
+                    strcpy(assemblyFile, argv[i + 1]);
+                    i++;
+                    cout << "Using Assembly File: " << assemblyFile << endl;
+                    break;
+                case 'c':
+                    cout << "Argument Console" << endl;
+                    break;
+                case 'h':
+                    printHelp();
+                    return 1;
+                    break;
+
+            }
+        }
+
+        
+        cout << "Argument " << i << ": " << argv[i] << endl;
+    }
+
+    return 0;
 }
